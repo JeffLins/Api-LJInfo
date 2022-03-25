@@ -2,17 +2,15 @@ import Usuario from '../models/usuario.js'
 import UsuarioDAO from '../DAO/usuarioDAO.js'
 
 
-    const usuariocontroller = (app, bd) => {
-            const usuarioDAO = new UsuarioDAO(bd)
+    const usuariocontroller = (app, db) => {
+    const usuarioDAO = new UsuarioDAO(db)
 
                     app.get('/usuario', async (req, res) =>{
-                
-                       try {
-                        const usuario = await usuarioDAO.reuneTodosUsuarios()
-                        res.json(usuario);
-
+                        try {
+                            const usuario = await usuarioDAO.reuneTodosUsuarios()
+                           res.status(200).json(usuario)
                        } catch (err) {
-                           res.json({"msg": err.message});
+                           res.status(400).json({"msg": err.message, "err": true});
                        }
                     })
 
@@ -20,11 +18,12 @@ import UsuarioDAO from '../DAO/usuarioDAO.js'
                     app.get('/usuario/id/:id', async (req, res) =>{
                     const id = req.params.id
                      try {
+                         await usuarioDAO._verificaId(id)
                        const usuario = await usuarioDAO.reuneUmUsuarios(id)
-                       res.json(usuario);
+                       res.status(302).json(usuario);
 
                      } catch (err) {
-                       res.json({"msg": err.message});
+                       res.status(404).json({"msg": err.message, "err": true});
                       
                      }  
                         })
@@ -34,37 +33,44 @@ import UsuarioDAO from '../DAO/usuarioDAO.js'
                     app.post('/usuario', async (req, res) =>{
                     const body = req.body
                         try{
-                            const novoUsuario = new Usuario(body.ID, body.NOME, body.EMAIL, body.SENHA)
-                            const usuarioDAO = await insertUsuario(novoUsuario)
-                            res.json(usuarioDAO);            
+                            const novoUsuario = new Usuario(body.nome, body.email, body.senha)
+                            const inserindoUsuario = await usuarioDAO.insereUsuario(novoUsuario)
+                            res.status(201).json(inserindoUsuario)            
                     } catch(err){
-                            res.json({ "msg": err.message})
+                            res.json({ "messagem": err})
                     }    
                 
                 })
 
                     app.delete('/usuario/id/:id', async (req, res) =>{
-                    const id = req.params.id
+                        const id = req.params.id
                         try {
-                        const usuarioDAO = await deleteUsuario(id)
-                        res.json(usuarioDAO)
+                        await usuarioDAO._verificaId(id)
+                        const usuarioDeletado = await usuarioDAO.deleteUsuario(id)
+                        res.status(202).json(usuarioDeletado)
 
-                        } catch (error) {
-                            res.json({"msg": err.message})
+                        } catch (err) {
+                            res.status(400).json({"msg": err.message, "err": true})
                         }
                 })
 
                     app.put('/usuario/id/:id', async (req, res) =>{
-                    const id = req.params.id
                         const body = req.body
+                        const id = req.params.id
 
-                            try{
-                            const usuarioAtualizado = new Usuario(body.ID, body.NOME, body.EMAIL, body.SENHA)
-                            const usuarioDAO = await atualizaUsuario(id, usuarioAtualizado)
-                                res.json(usuarioDAO)
-                        }catch(err){
+                            try{  
+                            const usuarioAtualizado = new Usuario( body.nome, body.email, body.senha)
+                             await usuarioDAO.atualizaUsuario(id, usuarioAtualizado)
+                             .then((resposta)=>{
+                                 res.status(200).json(resposta)
+                             })
+                             .catch((err)=>{
+                                 res.json(err)
+                             })
+                               
+                        }   catch(err){
 
-                        res.json({"msg": err.message});
+                        res.status(400).json({"msg": err.message, "err": true});
                 }
             })
         }

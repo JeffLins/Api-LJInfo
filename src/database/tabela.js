@@ -1,3 +1,5 @@
+//Deve ser executado apenas uma vez para criar o banco e que ele seja populado.
+
 import sqlite3 from "sqlite3";
 import {dirname} from 'path'
 import { fileURLToPath } from "url";
@@ -5,7 +7,7 @@ sqlite3.verbose()
 const filePath = dirname(fileURLToPath(import.meta.url)) + '/database.db'
 const db = new sqlite3.Database(filePath);
 
-
+// Usuarios 
 const USUARIOS_SCHEMA = `
 CREATE TABLE IF NOT EXISTS "USUARIOS"(
     "ID" INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,19 +30,19 @@ INSERT INTO USUARIOS (ID, NOME, EMAIL, SENHA) VALUES
 (9, 'Isaac Herrera Da Silva', 'isaac.herrera@yahoo.com.br', '*******'),
 (10, 'Alisson Rodriguez Oliveira', ' allison.rodriguez@gmail.com', '*******')`
 
-function criarTabelaUsuario(){
+function criaTabelaUsuario(){
     db.run(USUARIOS_SCHEMA,(err) =>{
         if(err) console.log("erro ao criar tabela usuario");
     });
 }
 
-function popularTabelaUsuario(){
+function populaTabelaUsuario(){
     db.run(ADD_USUARIOS_DATA,(err) => {
         if (err) console.log("erro ao popular tabela de usuários");
     });
 }
 
 db.serialize(() =>{
-    criarTabelaUsuario();
-    popularTabelaUsuario();
+    criaTabelaUsuario();
+    populaTabelaUsuario();
 });
