@@ -1,5 +1,8 @@
 # Api-LJInfo
- <img src ="./src/imagem/shark12.jpg" alt = "logo" width = "500" height = "300" align = "center">
+
+<div align ="center"> 
+<img src ="./src/imagem/shark12.jpg" alt = "logo" width = "500" height = "300">
+</div>
 
 <h1 align="center">Loja de Informática API</h1>
   
