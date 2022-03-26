@@ -7,7 +7,7 @@ class Usuario {
 
 
 _validaSenha = (senha) => {
-        if(senha == null || senha.length < 8) {
+        if(senha == null || senha.length <= 8) {
         throw new err('Digite uma senha com pelo menos 8 digitos')
         }
         return senha

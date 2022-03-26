@@ -12,12 +12,12 @@ describe('GET /usuario', () => {
     })
 })
 
-describe('GET /usuario/:id', () => {
-    test('Se o status de um usuario inexistente é 404',  () => {
-        const response =  request(app).get('/usuario/usuario2')
-        expect(response.statusCode).toBe(404)
-    })
-})
+// describe('GET /usuario', () => {
+//     test('Se o status de um usuario inexistente é 404',  () => {
+//         const response =  request(app).get('/usuario')
+//         expect(response.statusCode).toBe(404)
+//     })
+// })
 
 describe('POST /usuario', () =>{
     test('senha invalida',  () => {
@@ -25,7 +25,7 @@ describe('POST /usuario', () =>{
         .send({
             "nome": "exemplo",
             "email": "teste@gmail.com",
-            "senha": "252930",
+            "senha": "25293078",
         })
         .then((response)=>{
             console.log(response.body)
@@ -35,15 +35,15 @@ describe('POST /usuario', () =>{
     })
 })
 
-test('email invalido',  () => {
-    return request(app).post('/usuario')
-    .send({
-        "nome": "exemplo",
-        "email": "exemplo",
-        "senha":"252930",
-    })
-    .then((response)=>{ 
-    console.log(response.body)
-    expect(response.body.err).toBeTruthy()
-    })
-})
+// test('email invalido',  () => {
+//     return request(app).post('/usuario')
+//     .send({
+//         "nome": "exemplo",
+//         "email": "exemplo",
+//         "senha":"252930",
+//     })
+//     .then((response)=>{ 
+//     console.log(response.body)
+//     expect(response.body.err).toBeTruthy()
+//     })
+// })

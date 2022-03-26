@@ -5,14 +5,17 @@
   "main": "node ./API-LJ-INFO/index.js",
   "scripts": {
     "dev": "nodemon ./src/server.js",
-    "start": "node ./src/server.js"
+    "start": "node ./src/server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
-  "type":"module",
+  "type": "module",
   "author": "Jefferson Lima",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.3",
+    "jest": "^27.5.1",
     "nodemon": "^2.0.15",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "supertest": "^6.2.2"
   }
 }
